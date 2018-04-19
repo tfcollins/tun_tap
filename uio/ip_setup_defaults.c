@@ -140,7 +140,7 @@ int main(int argc, char *argv[])
 	
 	while ((opt = getopt(argc, argv, "R:L:h")) != -1) {
         switch (opt) {
-		// This will test burst of N packets in RF loopback
+		// Set up modem to RX and TX out RF with default settings
 		case 'R':
 			printf("Setting the defaults\n");
 			modem_write(0x0, 0x1); //reset
@@ -161,7 +161,7 @@ int main(int argc, char *argv[])
 			modem_write(0x118, (uint32_t)1);  //Rx Enable
 
             break;
-		// This will test burst of N seconds of packets in IP loopback
+		// Set up modem in internal loopback with default settings
 		case 'L':
 			printf("Setting the defaults\n");
 			modem_write(0x0, 0x1); //reset
@@ -181,46 +181,11 @@ int main(int argc, char *argv[])
 			modem_write(0x118, (uint32_t)1);  //Rx Enable
 			break;
 		default: /* '?' */
-            fprintf(stderr, "Usage: %s\n [-L <seconds> IP loopback Enable]\n [-R <packets> RF loopback Enable]\n", argv[0]);
+            fprintf(stderr, "Usage: %s\n [-L <N/A> IP loopback Enable]\n [-R <N/A> RF Output]\n", argv[0]);
 		}
     }
 
-	/*	
-	modem_read(0x12C, &data); //payloadLen
-	printf("CRC Errors: %d\n", data);
 
-	modem_read(0x12C, &data); //payloadLen
-	printf("payloadLen: %d\n", data);
-
-
-	modem_read(0x130, &data); //payloadLen
-	printf("Packet Count: %d\n", data);
-
-	//modem_read(0x128, &data); //payloadLen
-	//printf("payloadLen: %d\n", data);
-
-	// Cycle through debug registers
-
-	//Timing Lock
-	modem_write(0x10C, (uint32_t)1);
-	modem_read(0x128, &data); //payloadLen
-	printf("Timing Lock: %d\n", data);
-
-	//Timing Lock
-	modem_write(0x10C, (uint32_t)2);
-	modem_read(0x128, &data); //payloadLen
-	printf("Peaks Found: %d\n", data);
-
-	//Timing Lock
-	modem_write(0x10C, (uint32_t)3);
-	modem_read(0x128, &data); //payloadLen
-	printf("Frequency Lock: %d\n", data);
-
-	//Header Failures
-	modem_write(0x10C, (uint32_t)4);
-	modem_read(0x128, &data); //payloadLen
-	printf("Header Failures: %d\n", data);
-	*/
 	printf("All Done\n");
 	
 	return 0;
