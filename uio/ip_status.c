@@ -137,51 +137,33 @@ int main(void)
 
 	struct reg registers[10];
 	registers[0].name = "Timing Lock";
-	registers[0].index = 1;
-	registers[2].name = "Peaks Detected";
+	registers[0].index = 0;
+	registers[1].name = "Peaks Detected";
+	registers[1].index = 1;
+	registers[2].name = "Frequency Lock";
 	registers[2].index = 2;
-	registers[1].name = "Frequency Lock";
-	registers[1].index = 3;
 	registers[3].name = "Header Failures";
-	registers[3].index = 4;
+	registers[3].index = 3;
+	registers[4].name = "CRC Errors";
+	registers[4].index = 4;
+	registers[5].name = "Packet Count";
+	registers[5].index = 5;
+	registers[6].name = "Last Payload Length";
+	registers[6].index = 6;
 
 	int i = 1;
 	initscr();
 	while (1)
 	{
-		// Direct statuses	
-		modem_read(0x138, &data); 
-		printw("CRC Errors: %d \n", data);
-
-		modem_read(0x13C, &data); 
-		printw("Packet Count: %d \n", data);
-
 		// Cycle through indexed debug registers
 		int k;
-		for (k=0;k<4;k++)
+		for (k=0;k<7;k++)
 		{
 			modem_write(0x10C, registers[k].index);
 			modem_read(0x140, &data);
 			printw("%s: %d \n", registers[k].name, data);
 		}
 
-		modem_read(0x144, &data); 
-		printw("Last PayloadLen: %d \n", data);		
-
-		modem_read(0x148, &data); 
-		printw("TxPacket Count: %d \n", data);
-		
-		// Viterbi Pre Post
-		modem_write(0x134, 1);
-		modem_read(0x14C, &data); 
-		printw("Viterbi Pre Word Errors: %d \n", data);
-		modem_write(0x134, 0);
-		modem_read(0x14C, &data); 
-		printw("Viterbi Post Word Errors: %d \n", data);
-		modem_write(0x134, 2);
-		modem_read(0x14C, &data); 
-		printw("Descrambler Post Word Errors: %d \n", data);
-		
 		printw("[Press Any Key To Stop]\n",i);
 		refresh();
 		timeout(500);
